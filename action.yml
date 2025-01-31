@@ -1,36 +1,36 @@
-name: 'SSH port forwarding action'
-description: 'Forward a connection over SSH in the background'
+name: "SSH port forwarding action"
+description: "Forward a connection over SSH in the background"
 
 branding:
-  icon: 'corner-up-right'
-  color: 'red'
+  icon: "corner-up-right"
+  color: "red"
 
 inputs:
   ssh-key:
-    description: 'SSH private key'
+    description: "SSH private key"
     required: true
   ssh-host:
-    description: 'SSH host'
+    description: "SSH host"
     required: true
   ssh-port:
-    description: 'SSH port'
+    description: "SSH port"
     required: false
-    default: '22'
+    default: "22"
   ssh-user:
-    description: 'SSH user'
+    description: "SSH user"
     required: true
   remote-host:
-    description: 'Remote host'
+    description: "Remote host"
     required: true
   remote-port:
-    description: 'Remote port'
+    description: "Remote port"
     required: true
   local-port:
-    description: 'Local port'
+    description: "Local port"
     required: true
 
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
     - name: Start SSH port forwarding
       shell: bash
@@ -39,7 +39,7 @@ runs:
         mkdir -p ~/.ssh
         printf "%s" "${{ inputs.ssh-key }}" | tee user_key
         chmod 400 user_key
-        
+
         # Start SSH forwarder
         ssh -i user_key -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -N -L ${{ inputs.local-port }}:${{ inputs.remote-host }}:${{ inputs.remote-port }} -p ${{ inputs.ssh-port }} ${{ inputs.ssh-user }}@${{ inputs.ssh-host }} &
 
@@ -62,7 +62,7 @@ runs:
         fi
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ssh-port-forward
         path: user_key
