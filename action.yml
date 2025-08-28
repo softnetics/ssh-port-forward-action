@@ -61,8 +61,7 @@ runs:
           exit $isready 
         fi
 
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: ssh-port-forward
-        path: user_key
+    - name: Clean up
+      shell: bash
+      run: |
+        rm user_key
